@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title></title>
+
+    <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%D0%A3%D1%87%D0%B5%D1%82%20%D0%A2%D0%BE%D0%BF%D0%BB%D0%B8%D0%B2%D0%B0%20PRO%22%2C%22short_name%22%3A%22%D0%A2%D0%BE%D0%BF%D0%BB%D0%B8%D0%B2%D0%B0%20PRO%22%2C%22start_url%22%3A%22.%22%2C%22theme_color%22%3A%22%231a2b4c%22%2C%22background_color%22%3A%22%23f0f2f5%22%2C%22display%22%3A%22standalone%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fimg.icons8.com%2Ffluency%2F512%2Fgas-station.png%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D">
+
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-dark: #1557b0;
+            --accent: #34a853;
+            --danger: #ea4335;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-dark: #202124;
+            --text-light: #5f6368;
+            --shadow: 0 4px 12px rgba(0,0,0,0.08);
+            --border-subtle: #eef0f2;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background: var(--bg); 
+            color: var(--text-dark); 
+            padding: calc(env(safe-area-inset-top) + 12px) 12px 100px 12px; 
+            line-height: 1.5; 
+        }
+
+        .container { max-width: 480px; margin: 0 auto; }
+        .tab { display: none; animation: fadeIn 0.3s ease; }
+        .tab.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card { background: var(--card-bg); border-radius: 20px; padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.03); }
+        .card-title { font-size: 0.9rem; font-weight: 700; color: var(--text-light); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .card-title::before { content: ''; width: 4px; height: 16px; background: var(--primary); border-radius: 2px; }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .group { margin-bottom: 12px; }
+        .group label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-light); margin-bottom: 6px; padding-left: 4px; }
+        
+        .input-box { position: relative; }
+        .input-box input { width: 100%; padding: 14px 40px 14px 14px; border-radius: 14px; border: 2px solid var(--border-subtle); background: #fdfdfd; font-size: 1.1rem; font-weight: 600; transition: 0.2s; color: var(--text-dark); }
+        .input-box input:focus { border-color: var(--primary); background: #fff; outline: none; box-shadow: 0 0 0 4px rgba(26,115,232,0.1); }
+        .input-box .unit { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 0.8rem; font-weight: 700; color: #b0b8c1; }
+
+        /* Стилизация текстового поля комментария */
+        .input-box textarea { width: 100%; padding: 12px; border-radius: 14px; border: 2px solid var(--border-subtle); background: #fdfdfd; font-size: 1rem; font-weight: 600; transition: 0.2s; color: var(--text-dark); resize: none; height: 46px; }
+        .input-box textarea:focus { border-color: var(--primary); background: #fff; outline: none; box-shadow: 0 0 0 4px rgba(26,115,232,0.1); }
+
+        .res-display { border-radius: 18px; padding: 20px; text-align: center; margin-bottom: 15px; transition: 0.4s; }
+        .res-neutral { background: #f1f3f4; color: var(--text-light); }
+        .res-plus { background: #fce8e6; color: var(--danger); border: 1px solid #fad2cf; }
+        .res-minus { background: #e6f4ea; color: var(--accent); border: 1px solid #ceead6; }
+        .res-label { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+        .res-value { font-size: 2.2rem; font-weight: 900; }
+
+        .btn { width: 100%; padding: 16px; border: none; border-radius: 16px; font-weight: 700; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
+        .btn-main { background: var(--primary); color: #fff; box-shadow: 0 4px 14px rgba(26,115,232,0.3); }
+        .btn-main:active { transform: translateY(2px); box-shadow: none; }
+        .btn-ghost { background: none; color: var(--text-light); font-size: 0.85rem; margin-top: 10px; }
+        
+        .btn-withdraw-gray { background: rgba(128, 128, 128, 0.1); color: var(--text-light); border: 1px dashed var(--text-light); padding: 10px; font-size: 0.8rem; margin-top: 15px; margin-bottom: 20px; }
+        .btn-withdraw-gray:active { background: rgba(128, 128, 128, 0.2); }
+
+        select { width: 100%; padding: 12px; border-radius: 12px; border: 2px solid var(--border-subtle); font-weight: 600; margin-bottom: 15px; appearance: none; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%235f6368' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 12px center; }
+        .h-item { background: #fff; border-radius: 16px; padding: 14px; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); display: flex; flex-direction: column; gap: 6px; border-left: 6px solid #dadce0; }
+        .h-item.pos { border-left-color: var(--danger); }
+        .h-item.neg { border-left-color: var(--accent); }
+        .h-item.withd { border-left-color: #fbbc04; background: #fffef5; }
+        .h-row { display: flex; justify-content: space-between; align-items: center; }
+        .h-date { font-size: 0.7rem; font-weight: 700; color: var(--text-light); }
+        .h-km { font-size: 1rem; font-weight: 700; }
+        .h-diff { font-weight: 800; font-size: 1rem; }
+        .h-comment { font-size: 0.8rem; color: #70757a; font-style: italic; background: #f8f9fa; padding: 4px 8px; border-radius: 8px; margin-top: 2px; word-break: break-word; }
+        .summary { background: #e8f0fe; padding: 15px; border-radius: 16px; border: 1px solid #d2e3fc; color: #1967d2; margin-bottom: 15px; }
+
+        .nav { position: fixed; bottom: 15px; left: 15px; right: 15px; background: #1a2b4c; border-radius: 24px; display: flex; padding: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 1000; }
+        .nav-btn { flex: 1; border: none; background: none; color: #9aa0a6; font-size: 0.7rem; font-weight: 700; text-align: center; padding: 10px 0; border-radius: 18px; transition: 0.3s; }
+        .nav-btn.active { background: rgba(255,255,255,0.1); color: #fff; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div id="shift" class="tab active">
+        <div class="card">
+            <div class="card-title">Остатки и заправка</div>
+            <div class="grid">
+                <div class="group"><label>Утро</label><div class="input-box"><input type="number" id="fs" oninput="calc()" placeholder="0"><span class="unit">Л</span></div></div>
+                <div class="group"><label>Заправка</label><div class="input-box"><input type="number" id="fr" oninput="calc()" placeholder="0"><span class="unit">Л</span></div></div>
+            </div>
+            <div class="group"><label>Вечерний остаток</label><div class="input-box"><input type="number" id="fe" oninput="calc()" placeholder="0"><span class="unit">Л</span></div></div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Работа за смену</div>
+            <div class="group"><label>Пробег</label><div class="input-box"><input type="number" id="dist" oninput="calc()" placeholder="0"><span class="unit">КМ</span></div></div>
+            <div class="grid">
+                <div class="group"><label>Моточасы</label><div class="input-box"><input type="number" id="mh" oninput="calc()" placeholder="0"><span class="unit">Ч</span></div></div>
+                <div class="group"><label>Подъемы</label><div class="input-box"><input type="number" id="lp" oninput="calc()" placeholder="0"><span class="unit">РАЗ</span></div></div>
+            </div>
+            <div class="group" style="margin-top: 4px;">
+                <label>Комментарий к смене</label>
+                <div class="input-box"><textarea id="notes" placeholder="Например: Маршрут Б, ремонт..."></textarea></div>
+            </div>
+        </div>
+
+        <div id="rb" class="res-display res-neutral">
+            <div id="rl" class="res-label">Ожидание данных</div>
+            <div id="rv" class="res-value">0.00</div>
+        </div>
+
+        <button class="btn btn-main" onclick="save()">СОХРАНИТЬ В ИСТОРИЮ</button>
+        <button class="btn btn-ghost" onclick="reset()">Сбросить поля</button>
+    </div>
+
+    <div id="history" class="tab">
+        <div class="card">
+            <div class="card-title">Архив поездок</div>
+            <select id="mf" onchange="render()"></select>
+            <div id="ms" class="summary" style="display:none"></div>
+            
+            <div id="wdInputArea" style="display:none; margin-bottom: 15px; padding: 15px; border: 1px dashed #b0b8c1; border-radius: 16px; background: #fafafa;">
+                <div class="group" style="margin-bottom: 8px;"><label>Сколько литров списать?</label></div>
+                <div class="input-box">
+                    <input type="number" id="wdVal" placeholder="Введите количество">
+                    <span class="unit">Л</span>
+                </div>
+                <div style="display:flex; gap:10px; margin-top:12px;">
+                    <button class="btn btn-main" onclick="confirmWithdraw()" style="padding:10px; font-size:0.9rem; height:40px;">ОК</button>
+                    <button class="btn btn-ghost" onclick="cancelWithdraw()" style="padding:10px; margin:0; font-size:0.9rem; height:40px;">Отмена</button>
+                </div>
+            </div>
+
+            <div id="hl"></div>
+        </div>
+        <button id="btnWd" class="btn btn-withdraw-gray" onclick="showWithdrawInput()" style="display:none;">ЗАБРАТЬ ЭКОНОМИЮ</button>
+    </div>
+
+    <div id="norms" class="tab">
+        <div class="card">
+            <div class="card-title">Нормы расхода</div>
+            <div class="group"><label>Линейная (на 100 км)</label><input type="number" id="nd" value="25" oninput="sn()" style="width:100%; padding:12px; border-radius:10px; border:2px solid #eee;"></div>
+            <div class="group"><label>Моточас (1 час)</label><input type="number" id="nh" value="3.5" oninput="sn()" style="width:100%; padding:12px; border-radius:10px; border:2px solid #eee;"></div>
+            <div class="group"><label>Один подъем</label><input type="number" id="nl" value="0.5" oninput="sn()" style="width:100%; padding:12px; border-radius:10px; border:2px solid #eee;"></div>
+        </div>
+        <button class="btn btn-ghost" style="color:var(--danger); font-weight:bold;" onclick="clearAll()">ПОЛНАЯ ОЧИСТКА ДАННЫХ</button>
+    </div>
+</div>
+
+<nav class="nav">
+    <button class="nav-btn active" onclick="go('shift', this)">СМЕНА</button>
+    <button class="nav-btn" onclick="go('history', this)">ИСТОРИЯ</button>
+    <button class="nav-btn" onclick="go('norms', this)">НОРМЫ</button>
+</nav>
+
+<script>
+    let diff = 0;
+
+    window.onload = () => {
+        ['nd','nh','nl'].forEach(id => { if(localStorage.getItem(id)) document.getElementById(id).value = localStorage.getItem(id); });
+        document.getElementById('fs').value = localStorage.getItem('lastEvening') || '';
+        calc(); render();
+    };
+
+    function go(id, b) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
+        document.getElementById(id).classList.add('active'); b.classList.add('active');
+        if(id === 'history') { cancelWithdraw(); render(); }
+    }
+
+    function sn() { ['nd','nh','nl'].forEach(id => localStorage.setItem(id, document.getElementById(id).value)); calc(); }
+
+    function calc() {
+        const fs = +document.getElementById('fs').value||0, fr = +document.getElementById('fr').value||0, fe = +document.getElementById('fe').value||0;
+        const d = +document.getElementById('dist').value||0, h = +document.getElementById('mh').value||0, l = +document.getElementById('lp').value||0;
+        const nd = +document.getElementById('nd').value||25, nh = +document.getElementById('nh').value||3.5, nl = +document.getElementById('nl').value||0.5;
+        
+        const act = fs + fr - fe;
+        const exp = (d * nd / 100) + (h * nh) + (l * nl);
+        diff = act - exp;
+
+        const b = document.getElementById('rb'), v = document.getElementById('rv'), lbt = document.getElementById('rl');
+        if (!fs && !fe && !d) { b.className = 'res-display res-neutral'; lbt.innerText = 'ОЖИДАНИЕ ДАННЫХ'; v.innerText = '0.00'; return; }
+        
+        v.innerText = Math.abs(diff).toFixed(2);
+        if (diff > 0.05) { b.className = 'res-display res-plus'; lbt.innerText = 'ПЕРЕРАСХОД (Л)'; }
+        else if (diff < -0.05) { b.className = 'res-display res-minus'; lbt.innerText = 'ЭКОНОМИЯ (Л)'; }
+        else { b.className = 'res-display res-neutral'; lbt.innerText = 'В НОРМЕ'; v.innerText = '0.00'; }
+    }
+
+    function save() {
+        if(!document.getElementById('dist').value || !document.getElementById('fe').value) return alert('Введите пробег и вечерний остаток!');
+        const d = new Date(), hist = JSON.parse(localStorage.getItem('fLog')) || [];
+        
+        // Сбор данных комментария
+        const commentValue = document.getElementById('notes').value.trim();
+
+        hist.unshift({
+            id: Date.now(),
+            mk: `${d.getFullYear()}-${d.getMonth()}`,
+            dt: d.toLocaleString('ru', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'}),
+            km: +document.getElementById('dist').value,
+            df: diff,
+            w: false,
+            nt: commentValue // Сохраняем комментарий в объект истории
+        });
+        localStorage.setItem('fLog', JSON.stringify(hist));
+        localStorage.setItem('lastEvening', document.getElementById('fe').value);
+        alert('Данные сохранены!'); reset();
+    }
+
+    function showWithdrawInput() {
+        document.getElementById('btnWd').style.display = 'none';
+        document.getElementById('wdInputArea').style.display = 'block';
+        document.getElementById('wdVal').focus();
+    }
+
+    function cancelWithdraw() {
+        document.getElementById('wdInputArea').style.display = 'none';
+        const hist = JSON.parse(localStorage.getItem('fLog')) || [];
+        if(hist.length) document.getElementById('btnWd').style.display = 'block';
+        document.getElementById('wdVal').value = '';
+    }
+
+    function confirmWithdraw() {
+        let val = document.getElementById('wdVal').value;
+        if(!val || isNaN(val) || val <= 0) return alert('Введите корректное количество литров!');
+        
+        const d = new Date(), hist = JSON.parse(localStorage.getItem('fLog')) || [];
+        hist.unshift({
+            id: Date.now(),
+            mk: `${d.getFullYear()}-${d.getMonth()}`,
+            dt: d.toLocaleString('ru', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'}),
+            km: 0,
+            df: parseFloat(val), 
+            w: true,
+            nt: '' // Для операций изъятия комментарий пустой
+        });
+        localStorage.setItem('fLog', JSON.stringify(hist));
+        cancelWithdraw();
+        render();
+    }
+
+    function reset() {
+        document.getElementById('fs').value = localStorage.getItem('lastEvening') || '';
+        ['fr','fe','dist','mh','lp','notes'].forEach(id => document.getElementById(id).value = '');
+        calc();
+    }
+
+    function render() {
+        const hist = JSON.parse(localStorage.getItem('fLog')) || [], list = document.getElementById('hl'), f = document.getElementById('mf'), wdBtn = document.getElementById('btnWd');
+        if(!hist.length) { 
+            f.style.display='none'; wdBtn.style.display='none'; 
+            list.innerHTML = '<p style="text-align:center;padding:20px;color:gray">Нет сохраненных смен</p>'; return; 
+        }
+        
+        f.style.display='block'; 
+        if(document.getElementById('wdInputArea').style.display !== 'block') {
+            wdBtn.style.display='block';
+        }
+
+        const months = [...new Set(hist.map(i => i.mk))].sort().reverse();
+        const names = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+        f.innerHTML = months.map(m => {
+             const [y, mi] = m.split('-');
+             return `<option value="${m}">${names[mi]} ${y}</option>`;
+        }).join('');
+        
+        const filtered = hist.filter(i => i.mk === f.value);
+        let sK = 0, sD = 0;
+        list.innerHTML = filtered.map(i => {
+            sD += i.df;
+            
+            // Проверка наличия и форматирование компактного вывода комментария
+            const commentHtml = (i.nt && i.nt.length > 0) ? `<div class="h-comment">💬 ${i.nt}</div>` : '';
+
+            if(!i.w) {
+                sK += i.km;
+                return `<div class="h-item ${i.df > 0.05 ? 'pos' : 'neg'}">
+                    <div class="h-row"><span class="h-date">${i.dt}</span> <span style="font-size:0.7rem; color:red; cursor:pointer;" onclick="del(${i.id})">УДАЛИТЬ</span></div>
+                    <div class="h-row">
+                        <span class="h-km">${i.km} км</span>
+                        <span class="h-diff" style="color:${i.df > 0.05 ? 'var(--danger)' : 'var(--accent)'}">${i.df > 0 ? '+' : ''}${i.df.toFixed(1)} л</span>
+                    </div>
+                    ${commentHtml}
+                </div>`;
+            } else {
+                return `<div class="h-item withd">
+                    <div class="h-row"><span class="h-date">${i.dt}</span> <span style="font-size:0.7rem; color:red; cursor:pointer;" onclick="del(${i.id})">УДАЛИТЬ</span></div>
+                    <div class="h-row">
+                        <span class="h-km">🔻 Снятие экономии</span>
+                        <span class="h-diff" style="color:#b8860b">Изъято: ${i.df.toFixed(1)} л</span>
+                    </div>
+                </div>`;
+            }
+        }).join('');
+        
+        const sBox = document.getElementById('ms');
+        sBox.style.display = 'block';
+        sBox.innerHTML = `За месяц: <b>${sK} км</b> | Итог: <b style="color:${sD > 0.05 ? 'red':'green'}">${sD.toFixed(1)} л</b>`;
+    }
+
+    function del(id) { if(confirm('Удалить эту запись?')) {
+        let h = JSON.parse(localStorage.getItem('fLog'));
+        localStorage.setItem('fLog', JSON.stringify(h.filter(i => i.id !== id)));
+        render();
+    }}
+
+    function clearAll() { if(confirm('Это полностью сотрет историю. Вы уверены?')) { localStorage.clear(); location.reload(); } }
+</script>
+</body>
+</html>
