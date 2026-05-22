@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title></title>
+    <title>Учет Топлива PRO | 10/10</title>
 
     <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%D0%A3%D1%87%D0%B5%D1%82%20%D0%A2%D0%BE%D0%BF%D0%BB%D0%B8%D0%B2%D0%B0%20PRO%22%2C%22short_name%22%3A%22%D0%A2%D0%BE%D0%BF%D0%BB%D0%B8%D0%B2%D0%B0%20PRO%22%2C%22start_url%22%3A%22.%22%2C%22theme_color%22%3A%22%231a2b4c%22%2C%22background_color%22%3A%22%23f0f2f5%22%2C%22display%22%3A%22standalone%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fimg.icons8.com%2Ffluency%2F512%2Fgas-station.png%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D">
 
@@ -19,9 +19,22 @@
             --text-light: #5f6368;
             --shadow: 0 4px 12px rgba(0,0,0,0.08);
             --border-subtle: #eef0f2;
+            --input-bg: #fdfdfd;
+            --toast-bg: #323232;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+        [data-theme="dark"] {
+            --bg: #121212;
+            --card-bg: #1e1e1e;
+            --text-dark: #e8eaed;
+            --text-light: #9aa0a6;
+            --shadow: 0 4px 12px rgba(0,0,0,0.3);
+            --border-subtle: #2d2d2d;
+            --input-bg: #2d2d2d;
+            --toast-bg: #e8eaed;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; transition: background-color 0.3s, color 0.3s; }
         
         body { 
             background: var(--bg); 
@@ -37,105 +50,141 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
         .card { background: var(--card-bg); border-radius: 20px; padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.03); }
-        .card-title { font-size: 0.9rem; font-weight: 700; color: var(--text-light); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-        .card-title::before { content: ''; width: 4px; height: 16px; background: var(--primary); border-radius: 2px; }
+        .card-title { font-size: 0.9rem; font-weight: 700; color: var(--text-light); margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; }
+        .card-title-text { display: flex; align-items: center; gap: 8px; }
+        .card-title-text::before { content: ''; width: 4px; height: 16px; background: var(--primary); border-radius: 2px; }
 
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .group { margin-bottom: 12px; }
         .group label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-light); margin-bottom: 6px; padding-left: 4px; }
         
         .input-box { position: relative; }
-        .input-box input { width: 100%; padding: 14px 40px 14px 14px; border-radius: 14px; border: 2px solid var(--border-subtle); background: #fdfdfd; font-size: 1.1rem; font-weight: 600; transition: 0.2s; color: var(--text-dark); }
-        .input-box input:focus { border-color: var(--primary); background: #fff; outline: none; box-shadow: 0 0 0 4px rgba(26,115,232,0.1); }
+        .input-box input { width: 100%; padding: 14px 40px 14px 14px; border-radius: 14px; border: 2px solid var(--border-subtle); background: var(--input-bg); font-size: 1.1rem; font-weight: 600; transition: 0.2s; color: var(--text-dark); }
+        .input-box input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 4px rgba(26,115,232,0.1); }
         .input-box .unit { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 0.8rem; font-weight: 700; color: #b0b8c1; }
 
-        /* Стилизация текстового поля комментария */
-        .input-box textarea { width: 100%; padding: 12px; border-radius: 14px; border: 2px solid var(--border-subtle); background: #fdfdfd; font-size: 1rem; font-weight: 600; transition: 0.2s; color: var(--text-dark); resize: none; height: 46px; }
-        .input-box textarea:focus { border-color: var(--primary); background: #fff; outline: none; box-shadow: 0 0 0 4px rgba(26,115,232,0.1); }
+        .input-box textarea { width: 100%; padding: 12px; border-radius: 14px; border: 2px solid var(--border-subtle); background: var(--input-bg); font-size: 1rem; font-weight: 600; transition: 0.2s; color: var(--text-dark); resize: none; height: 60px; }
+        .input-box textarea:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 4px rgba(26,115,232,0.1); }
 
-        .res-display { border-radius: 18px; padding: 20px; text-align: center; margin-bottom: 15px; transition: 0.4s; }
-        .res-neutral { background: #f1f3f4; color: var(--text-light); }
+        .res-display { border-radius: 18px; padding: 16px; text-align: center; margin-bottom: 15px; transition: 0.4s; }
+        .res-neutral { background: #f1f3f4; color: #5f6368; }
+        [data-theme="dark"] .res-neutral { background: #2d2d2d; color: #9aa0a6; }
         .res-plus { background: #fce8e6; color: var(--danger); border: 1px solid #fad2cf; }
+        [data-theme="dark"] .res-plus { background: #3c1e1e; border-color: #612d2a; }
         .res-minus { background: #e6f4ea; color: var(--accent); border: 1px solid #ceead6; }
+        [data-theme="dark"] .res-minus { background: #1a3c22; border-color: #236132; }
+        
         .res-label { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-        .res-value { font-size: 2.2rem; font-weight: 900; }
+        .res-value { font-size: 2rem; font-weight: 900; line-height: 1.2; margin-bottom: 6px; }
+        .res-details { font-size: 0.8rem; font-weight: 600; display: flex; justify-content: center; gap: 12px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 6px; margin-top: 4px; }
+        [data-theme="dark"] .res-details { border-top-color: rgba(255,255,255,0.05); }
+        .res-live-tank { font-size: 0.8rem; font-weight: 700; color: var(--text-light); text-align: center; margin-top: -8px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 4px; }
 
         .btn { width: 100%; padding: 16px; border: none; border-radius: 16px; font-weight: 700; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
         .btn-main { background: var(--primary); color: #fff; box-shadow: 0 4px 14px rgba(26,115,232,0.3); }
         .btn-main:active { transform: translateY(2px); box-shadow: none; }
         .btn-ghost { background: none; color: var(--text-light); font-size: 0.85rem; margin-top: 10px; }
         
-        .btn-withdraw-gray { background: rgba(128, 128, 128, 0.1); color: var(--text-light); border: 1px dashed var(--text-light); padding: 10px; font-size: 0.8rem; margin-top: 15px; margin-bottom: 20px; }
-        .btn-withdraw-gray:active { background: rgba(128, 128, 128, 0.2); }
+        .btn-withdraw-gray { background: rgba(128, 128, 128, 0.1); color: var(--text-light); border: 1px dashed var(--text-light); padding: 10px; font-size: 0.8rem; margin-top: 15px; margin-bottom: 10px; }
 
-        select { width: 100%; padding: 12px; border-radius: 12px; border: 2px solid var(--border-subtle); font-weight: 600; margin-bottom: 15px; appearance: none; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%235f6368' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 12px center; }
-        .h-item { background: #fff; border-radius: 16px; padding: 14px; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); display: flex; flex-direction: column; gap: 6px; border-left: 6px solid #dadce0; }
+        select { width: 100%; padding: 12px; border-radius: 12px; border: 2px solid var(--border-subtle); font-weight: 600; margin-bottom: 15px; appearance: none; background: var(--card-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%235f6368' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 12px center; color: var(--text-dark); }
+        
+        .h-item { background: var(--card-bg); border-radius: 16px; padding: 14px; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); display: flex; flex-direction: column; gap: 6px; border-left: 6px solid #dadce0; }
         .h-item.pos { border-left-color: var(--danger); }
         .h-item.neg { border-left-color: var(--accent); }
-        .h-item.withd { border-left-color: #fbbc04; background: #fffef5; }
+        .h-item.withd { border-left-color: #fbbc04; }
+        [data-theme="dark"] .h-item.withd { background: #2a261f; }
         .h-row { display: flex; justify-content: space-between; align-items: center; }
         .h-date { font-size: 0.7rem; font-weight: 700; color: var(--text-light); }
         .h-km { font-size: 1rem; font-weight: 700; }
         .h-diff { font-weight: 800; font-size: 1rem; }
-        .h-comment { font-size: 0.8rem; color: #70757a; font-style: italic; background: #f8f9fa; padding: 4px 8px; border-radius: 8px; margin-top: 2px; word-break: break-word; }
-        .summary { background: #e8f0fe; padding: 15px; border-radius: 16px; border: 1px solid #d2e3fc; color: #1967d2; margin-bottom: 15px; }
+        
+        .h-sub-info { font-size: 0.75rem; color: var(--text-light); font-weight: 600; display: flex; gap: 8px; flex-wrap: wrap; margin-top: -2px; }
+        .h-compare-line { font-size: 0.75rem; font-weight: 700; border-top: 1px dashed var(--border-subtle); padding-top: 4px; margin-top: 2px; display: flex; justify-content: space-between; color: var(--text-light); }
+
+        .h-comment { font-size: 0.8rem; color: var(--text-light); font-style: italic; background: var(--bg); padding: 6px 10px; border-radius: 8px; margin-top: 2px; word-break: break-word; border-left: 3px solid var(--primary); }
+        
+        .summary { background: #e8f0fe; padding: 15px; border-radius: 16px; border: 1px solid #d2e3fc; color: #1967d2; margin-bottom: 15px; font-size: 0.85rem; line-height: 1.5; }
+        [data-theme="dark"] .summary { background: #1a2b4c; border-color: #1557b0; color: #aecbfa; }
 
         .nav { position: fixed; bottom: 15px; left: 15px; right: 15px; background: #1a2b4c; border-radius: 24px; display: flex; padding: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 1000; }
         .nav-btn { flex: 1; border: none; background: none; color: #9aa0a6; font-size: 0.7rem; font-weight: 700; text-align: center; padding: 10px 0; border-radius: 18px; transition: 0.3s; }
         .nav-btn.active { background: rgba(255,255,255,0.1); color: #fff; }
+
+        .btn-delete, .btn-edit { font-size: 0.7rem; font-weight: bold; cursor: pointer; padding: 4px 8px; border-radius: 6px; background: rgba(0,0,0,0.05); display: inline-block; }
+        .btn-delete { color: var(--danger); }
+        .btn-edit { color: var(--primary); margin-right: 8px; }
+        .theme-card-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; }
+        .theme-select-btn, .export-btn { background: var(--border-subtle); color: var(--text-dark); border: none; padding: 8px 16px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; margin-left: 8px; }
+        .flex-btns { display: flex; gap: 8px; margin-top: 8px; }
+        
+        /* Toast notification */
+        #toast { position: fixed; bottom: 90px; left: 20px; right: 20px; background: var(--toast-bg); color: white; text-align: center; padding: 12px; border-radius: 40px; font-weight: 600; z-index: 2000; opacity: 0; transition: opacity 0.3s; pointer-events: none; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        [data-theme="dark"] #toast { color: #121212; }
+        .btn-cancel-edit { background: var(--border-subtle); color: var(--text-dark); margin-top: 8px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-
     <div id="shift" class="tab active">
         <div class="card">
-            <div class="card-title">Остатки и заправка</div>
+            <div class="card-title"><div class="card-title-text">Остатки и заправка</div></div>
             <div class="grid">
-                <div class="group"><label>Утро</label><div class="input-box"><input type="number" id="fs" oninput="calc()" placeholder="0"><span class="unit">Л</span></div></div>
-                <div class="group"><label>Заправка</label><div class="input-box"><input type="number" id="fr" oninput="calc()" placeholder="0"><span class="unit">Л</span></div></div>
+                <div class="group"><label>Утро (было в баке)</label><div class="input-box"><input type="number" id="fs" step="any" inputmode="decimal" oninput="calc()" placeholder="0"><span class="unit">Л</span></div></div>
+                <div class="group"><label>Заправлено</label><div class="input-box"><input type="number" id="fr" step="any" inputmode="decimal" oninput="calc()" placeholder="0"><span class="unit">Л</span></div></div>
             </div>
-            <div class="group"><label>Вечерний остаток</label><div class="input-box"><input type="number" id="fe" oninput="calc()" placeholder="0"><span class="unit">Л</span></div></div>
+            <div class="group"><label>Вечерний остаток</label><div class="input-box"><input type="number" id="fe" step="any" inputmode="decimal" oninput="calc()" placeholder="0"><span class="unit">Л</span></div></div>
         </div>
 
         <div class="card">
-            <div class="card-title">Работа за смену</div>
-            <div class="group"><label>Пробег</label><div class="input-box"><input type="number" id="dist" oninput="calc()" placeholder="0"><span class="unit">КМ</span></div></div>
+            <div class="card-title"><div class="card-title-text">Работа за смену</div></div>
+            <div class="group"><label>Пробег (км)</label><div class="input-box"><input type="number" id="dist" step="any" inputmode="decimal" oninput="calc()" placeholder="0"><span class="unit">КМ</span></div></div>
             <div class="grid">
-                <div class="group"><label>Моточасы</label><div class="input-box"><input type="number" id="mh" oninput="calc()" placeholder="0"><span class="unit">Ч</span></div></div>
-                <div class="group"><label>Подъемы</label><div class="input-box"><input type="number" id="lp" oninput="calc()" placeholder="0"><span class="unit">РАЗ</span></div></div>
+                <div class="group"><label>Моточасы</label><div class="input-box"><input type="number" id="mh" step="any" inputmode="decimal" oninput="calc()" placeholder="0"><span class="unit">Ч</span></div></div>
+                <div class="group"><label>Подъемы кузова</label><div class="input-box"><input type="number" id="lp" step="any" inputmode="decimal" oninput="calc()" placeholder="0"><span class="unit">РАЗ</span></div></div>
             </div>
-            <div class="group" style="margin-top: 4px;">
+            <div class="group">
                 <label>Комментарий к смене</label>
-                <div class="input-box"><textarea id="notes" placeholder="Например: Маршрут Б, ремонт..."></textarea></div>
+                <div class="input-box"><textarea id="notes" placeholder="Маршрут, особенности, ремонт..."></textarea></div>
             </div>
+            <div id="editModeIndicator" style="display:none; background: #fbbc04; color:#202124; padding:8px; border-radius:12px; margin-top:8px; font-size:0.8rem; text-align:center;">
+                ✏️ Режим редактирования. <button class="btn-ghost" onclick="cancelEdit()" style="display:inline; margin:0; padding:0 8px;">Отменить</button>
+            </div>
+        </div>
+
+        <div id="liveTank" class="res-live-tank" style="display: none;">
+            🔋 Остаток по норме: <b id="liveTankVal" style="color:var(--primary);">0.0</b> л
         </div>
 
         <div id="rb" class="res-display res-neutral">
             <div id="rl" class="res-label">Ожидание данных</div>
             <div id="rv" class="res-value">0.00</div>
+            <div id="rd" class="res-details" style="display:none;">
+                <span>Факт: <b id="r-act">0</b> л</span>
+                <span>Норма: <b id="r-exp">0</b> л</span>
+            </div>
         </div>
 
-        <button class="btn btn-main" onclick="save()">СОХРАНИТЬ В ИСТОРИЮ</button>
-        <button class="btn btn-ghost" onclick="reset()">Сбросить поля</button>
+        <button class="btn btn-main" onclick="saveShift()">СОХРАНИТЬ СМЕНУ</button>
+        <button class="btn btn-ghost" onclick="resetForm()">Сбросить поля</button>
     </div>
 
     <div id="history" class="tab">
         <div class="card">
-            <div class="card-title">Архив поездок</div>
-            <select id="mf" onchange="render()"></select>
+            <div class="card-title"><div class="card-title-text">Архив поездок</div></div>
+            <select id="mf" onchange="changeMonth()"></select>
             <div id="ms" class="summary" style="display:none"></div>
             
-            <div id="wdInputArea" style="display:none; margin-bottom: 15px; padding: 15px; border: 1px dashed #b0b8c1; border-radius: 16px; background: #fafafa;">
+            <div id="wdInputArea" style="display:none; margin-bottom: 15px; padding: 15px; border: 1px dashed #b0b8c1; border-radius: 16px; background: var(--bg);">
                 <div class="group" style="margin-bottom: 8px;"><label>Сколько литров списать?</label></div>
                 <div class="input-box">
-                    <input type="number" id="wdVal" placeholder="Введите количество">
+                    <input type="number" id="wdVal" step="any" inputmode="decimal" placeholder="Введите количество">
                     <span class="unit">Л</span>
                 </div>
                 <div style="display:flex; gap:10px; margin-top:12px;">
-                    <button class="btn btn-main" onclick="confirmWithdraw()" style="padding:10px; font-size:0.9rem; height:40px;">ОК</button>
-                    <button class="btn btn-ghost" onclick="cancelWithdraw()" style="padding:10px; margin:0; font-size:0.9rem; height:40px;">Отмена</button>
+                    <button class="btn btn-main" onclick="confirmWithdraw()" style="padding:10px; font-size:0.9rem;">ОК</button>
+                    <button class="btn btn-ghost" onclick="cancelWithdraw()" style="padding:10px; margin:0;">Отмена</button>
                 </div>
             </div>
 
@@ -146,176 +195,510 @@
 
     <div id="norms" class="tab">
         <div class="card">
-            <div class="card-title">Нормы расхода</div>
-            <div class="group"><label>Линейная (на 100 км)</label><input type="number" id="nd" value="25" oninput="sn()" style="width:100%; padding:12px; border-radius:10px; border:2px solid #eee;"></div>
-            <div class="group"><label>Моточас (1 час)</label><input type="number" id="nh" value="3.5" oninput="sn()" style="width:100%; padding:12px; border-radius:10px; border:2px solid #eee;"></div>
-            <div class="group"><label>Один подъем</label><input type="number" id="nl" value="0.5" oninput="sn()" style="width:100%; padding:12px; border-radius:10px; border:2px solid #eee;"></div>
+            <div class="card-title"><div class="card-title-text">Внешний вид</div></div>
+            <div class="theme-card-row">
+                <span style="font-size: 0.9rem; font-weight: 600;">Оформление приложения</span>
+                <button class="theme-select-btn" onclick="toggleTheme()" id="themeBtn">Режим: 🌙 Тёмный</button>
+            </div>
         </div>
-        <button class="btn btn-ghost" style="color:var(--danger); font-weight:bold;" onclick="clearAll()">ПОЛНАЯ ОЧИСТКА ДАННЫХ</button>
+
+        <div class="card">
+            <div class="card-title"><div class="card-title-text">Нормы расхода</div></div>
+            <div class="group"><label>Линейная (на 100 км)</label><input type="number" id="nd" step="any" value="25" style="width:100%; padding:12px; border-radius:10px; border:2px solid var(--border-subtle); background: var(--input-bg); color:var(--text-dark); font-weight:600;"></div>
+            <div class="group"><label>Моточас (1 час)</label><input type="number" id="nh" step="any" value="3.5" style="width:100%; padding:12px; border-radius:10px; border:2px solid var(--border-subtle); background: var(--input-bg); color:var(--text-dark); font-weight:600;"></div>
+            <div class="group"><label>Один подъем кузова</label><input type="number" id="nl" step="any" value="0.5" style="width:100%; padding:12px; border-radius:10px; border:2px solid var(--border-subtle); background: var(--input-bg); color:var(--text-dark); font-weight:600;"></div>
+            
+            <button class="btn btn-main" onclick="saveNorms()" style="margin-top: 10px;">СОХРАНИТЬ НОРМЫ</button>
+        </div>
+        <div class="flex-btns">
+            <button class="btn btn-ghost" style="flex:1;" onclick="exportData('json')">📁 Экспорт JSON</button>
+            <button class="btn btn-ghost" style="flex:1;" onclick="exportData('csv')">📊 Экспорт CSV</button>
+        </div>
+        <button class="btn btn-ghost" style="color:var(--danger); font-weight:bold; margin-top:10px;" onclick="confirmClearAll()">ПОЛНАЯ ОЧИСТКА ДАННЫХ</button>
     </div>
 </div>
 
 <nav class="nav">
     <button class="nav-btn active" onclick="go('shift', this)">СМЕНА</button>
     <button class="nav-btn" onclick="go('history', this)">ИСТОРИЯ</button>
-    <button class="nav-btn" onclick="go('norms', this)">НОРМЫ</button>
+    <button class="nav-btn" onclick="go('norms', this)">НАСТРОЙКИ</button>
 </nav>
 
+<div id="toast"></div>
+
 <script>
-    let diff = 0;
-
-    window.onload = () => {
-        ['nd','nh','nl'].forEach(id => { if(localStorage.getItem(id)) document.getElementById(id).value = localStorage.getItem(id); });
-        document.getElementById('fs').value = localStorage.getItem('lastEvening') || '';
-        calc(); render();
-    };
-
-    function go(id, b) {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
-        document.getElementById(id).classList.add('active'); b.classList.add('active');
-        if(id === 'history') { cancelWithdraw(); render(); }
+    // --- Глобальное состояние ---
+    let currentEditId = null;          // id редактируемой записи
+    let currentMonth = '';              // выбранный месяц в формате YYYY-MM
+    
+    // --- Вспомогательные функции уведомлений ---
+    function showToast(msg, isError = false) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.style.backgroundColor = isError ? 'var(--danger)' : 'var(--toast-bg)';
+        toast.style.color = isError ? 'white' : (document.documentElement.getAttribute('data-theme') === 'dark' ? '#121212' : 'white');
+        toast.style.opacity = '1';
+        setTimeout(() => { toast.style.opacity = '0'; }, 2500);
     }
-
-    function sn() { ['nd','nh','nl'].forEach(id => localStorage.setItem(id, document.getElementById(id).value)); calc(); }
-
+    
+    // --- Получение безопасных чисел из полей ---
+    function getNumber(id) {
+        const el = document.getElementById(id);
+        if (!el) return 0;
+        let val = el.valueAsNumber;
+        if (isNaN(val)) return 0;
+        return val;
+    }
+    
+    // --- Расчёт (возвращает объект, обновляет UI) ---
     function calc() {
-        const fs = +document.getElementById('fs').value||0, fr = +document.getElementById('fr').value||0, fe = +document.getElementById('fe').value||0;
-        const d = +document.getElementById('dist').value||0, h = +document.getElementById('mh').value||0, l = +document.getElementById('lp').value||0;
-        const nd = +document.getElementById('nd').value||25, nh = +document.getElementById('nh').value||3.5, nl = +document.getElementById('nl').value||0.5;
+        const fs = getNumber('fs');
+        const fr = getNumber('fr');
+        const fe = getNumber('fe');
+        const d = getNumber('dist');
+        const h = getNumber('mh');
+        const l = getNumber('lp');
+        const nd = getNumber('nd');
+        const nh = getNumber('nh');
+        const nl = getNumber('nl');
         
-        const act = fs + fr - fe;
-        const exp = (d * nd / 100) + (h * nh) + (l * nl);
-        diff = act - exp;
-
-        const b = document.getElementById('rb'), v = document.getElementById('rv'), lbt = document.getElementById('rl');
-        if (!fs && !fe && !d) { b.className = 'res-display res-neutral'; lbt.innerText = 'ОЖИДАНИЕ ДАННЫХ'; v.innerText = '0.00'; return; }
+        const expected = (d * nd / 100) + (h * nh) + (l * nl);
+        const actual = fs + fr - fe;
+        const diff = actual - expected;
         
+        // Живой остаток
+        const liveTankBox = document.getElementById('liveTank');
+        if (fs > 0 && (d > 0 || h > 0 || l > 0)) {
+            liveTankBox.style.display = 'flex';
+            const remaining = fs + fr - expected;
+            document.getElementById('liveTankVal').innerText = remaining.toFixed(1);
+        } else {
+            liveTankBox.style.display = 'none';
+        }
+        
+        const b = document.getElementById('rb');
+        const v = document.getElementById('rv');
+        const label = document.getElementById('rl');
+        const details = document.getElementById('rd');
+        
+        if (fs === 0 && fe === 0 && d === 0 && h === 0 && l === 0 && fr === 0) {
+            b.className = 'res-display res-neutral';
+            label.innerText = 'ОЖИДАНИЕ ДАННЫХ';
+            v.innerText = '0.00';
+            details.style.display = 'none';
+            return { expected, actual, diff };
+        }
+        
+        details.style.display = 'flex';
+        document.getElementById('r-act').innerText = actual.toFixed(1);
+        document.getElementById('r-exp').innerText = expected.toFixed(1);
         v.innerText = Math.abs(diff).toFixed(2);
-        if (diff > 0.05) { b.className = 'res-display res-plus'; lbt.innerText = 'ПЕРЕРАСХОД (Л)'; }
-        else if (diff < -0.05) { b.className = 'res-display res-minus'; lbt.innerText = 'ЭКОНОМИЯ (Л)'; }
-        else { b.className = 'res-display res-neutral'; lbt.innerText = 'В НОРМЕ'; v.innerText = '0.00'; }
-    }
-
-    function save() {
-        if(!document.getElementById('dist').value || !document.getElementById('fe').value) return alert('Введите пробег и вечерний остаток!');
-        const d = new Date(), hist = JSON.parse(localStorage.getItem('fLog')) || [];
         
-        // Сбор данных комментария
-        const commentValue = document.getElementById('notes').value.trim();
-
-        hist.unshift({
-            id: Date.now(),
-            mk: `${d.getFullYear()}-${d.getMonth()}`,
-            dt: d.toLocaleString('ru', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'}),
-            km: +document.getElementById('dist').value,
-            df: diff,
-            w: false,
-            nt: commentValue // Сохраняем комментарий в объект истории
-        });
-        localStorage.setItem('fLog', JSON.stringify(hist));
-        localStorage.setItem('lastEvening', document.getElementById('fe').value);
-        alert('Данные сохранены!'); reset();
+        if (diff > 0.05) {
+            b.className = 'res-display res-plus';
+            label.innerText = 'ПЕРЕРАСХОД (Л)';
+        } else if (diff < -0.05) {
+            b.className = 'res-display res-minus';
+            label.innerText = 'ЭКОНОМИЯ (Л)';
+        } else {
+            b.className = 'res-display res-neutral';
+            label.innerText = 'В НОРМЕ';
+            v.innerText = '0.00';
+        }
+        
+        return { expected, actual, diff };
     }
-
+    
+    // --- Сохранение (новая запись или обновление) ---
+    function saveShift() {
+        // Принудительно пересчитаем
+        const { expected, actual, diff } = calc();
+        
+        const fs = getNumber('fs');
+        const fr = getNumber('fr');
+        const fe = getNumber('fe');
+        const dist = getNumber('dist');
+        
+        // Валидация: должны быть заполнены утро, заправка, вечер, пробег (могут быть 0, но явно заданы)
+        if (isNaN(fs) || isNaN(fr) || isNaN(fe)) {
+            showToast('❌ Заполните утро, заправку и вечерний остаток (можно 0)', true);
+            return;
+        }
+        if (isNaN(dist)) {
+            showToast('❌ Укажите пробег (можно 0)', true);
+            return;
+        }
+        
+        const comment = document.getElementById('notes').value.trim();
+        const now = new Date();
+        const monthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+        const dateStr = now.toLocaleString('ru', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'});
+        
+        let history = JSON.parse(localStorage.getItem('fLog')) || [];
+        
+        if (currentEditId !== null) {
+            // Обновляем существующую запись
+            const index = history.findIndex(item => item.id === currentEditId);
+            if (index !== -1) {
+                history[index] = {
+                    ...history[index],
+                    dt: dateStr,
+                    km: dist,
+                    mh: getNumber('mh'),
+                    lp: getNumber('lp'),
+                    act: actual,
+                    exp: expected,
+                    df: diff,
+                    nt: comment,
+                    w: false
+                };
+                showToast('✏️ Запись обновлена');
+            }
+            cancelEdit();
+        } else {
+            // Новая запись
+            const newRecord = {
+                id: Date.now(),
+                mk: monthKey,
+                dt: dateStr,
+                km: dist,
+                mh: getNumber('mh'),
+                lp: getNumber('lp'),
+                act: actual,
+                exp: expected,
+                df: diff,
+                w: false,
+                nt: comment
+            };
+            history.unshift(newRecord);
+            showToast('✅ Смена сохранена');
+        }
+        
+        localStorage.setItem('fLog', JSON.stringify(history));
+        localStorage.setItem('lastEvening', fe.toString());
+        resetForm();
+        renderHistory(); // обновить историю, если мы на ней
+        // Если активна вкладка истории, перерисовываем; иначе не страшно
+        if (document.getElementById('history').classList.contains('active')) {
+            renderHistory();
+        }
+    }
+    
+    // --- Редактирование записи ---
+    function editRecord(id) {
+        const history = JSON.parse(localStorage.getItem('fLog')) || [];
+        const record = history.find(r => r.id === id);
+        if (!record) return;
+        
+        // Заполняем форму на вкладке Смена
+        document.getElementById('fs').value = ''; // утро не подставляем из истории
+        document.getElementById('fr').value = '';
+        document.getElementById('fe').value = '';
+        document.getElementById('dist').value = record.km;
+        document.getElementById('mh').value = record.mh;
+        document.getElementById('lp').value = record.lp;
+        document.getElementById('notes').value = record.nt || '';
+        
+        // Устанавливаем режим редактирования
+        currentEditId = id;
+        document.getElementById('editModeIndicator').style.display = 'block';
+        // Переключаемся на вкладку смены
+        go('shift', document.querySelector('.nav-btn.active'));
+        showToast('✏️ Редактирование: измените данные и нажмите "СОХРАНИТЬ СМЕНУ"');
+        calc(); // обновить расчёт
+    }
+    
+    function cancelEdit() {
+        currentEditId = null;
+        document.getElementById('editModeIndicator').style.display = 'none';
+        // Не очищаем форму, просто выходим из режима
+    }
+    
+    // --- Удаление ---
+    function deleteRecord(id) {
+        if (confirm('Удалить запись?')) {
+            let history = JSON.parse(localStorage.getItem('fLog')) || [];
+            history = history.filter(r => r.id !== id);
+            localStorage.setItem('fLog', JSON.stringify(history));
+            renderHistory();
+            showToast('🗑️ Запись удалена');
+            if (currentEditId === id) cancelEdit();
+        }
+    }
+    
+    // --- Сброс формы (кроме утреннего остатка) ---
+    function resetForm() {
+        document.getElementById('fs').value = localStorage.getItem('lastEvening') || '';
+        document.getElementById('fr').value = '';
+        document.getElementById('fe').value = '';
+        document.getElementById('dist').value = '';
+        document.getElementById('mh').value = '';
+        document.getElementById('lp').value = '';
+        document.getElementById('notes').value = '';
+        cancelEdit();
+        calc();
+    }
+    
+    // --- Рендер истории (с сохранением выбранного месяца) ---
+    function renderHistory() {
+        const history = JSON.parse(localStorage.getItem('fLog')) || [];
+        const monthSelect = document.getElementById('mf');
+        const listDiv = document.getElementById('hl');
+        const summaryDiv = document.getElementById('ms');
+        const withdrawBtn = document.getElementById('btnWd');
+        
+        if (!history.length) {
+            monthSelect.style.display = 'none';
+            summaryDiv.style.display = 'none';
+            withdrawBtn.style.display = 'none';
+            listDiv.innerHTML = '<p style="text-align:center;padding:20px;color:gray">Нет сохранённых смен</p>';
+            return;
+        }
+        
+        monthSelect.style.display = 'block';
+        
+        // Получаем уникальные месяцы в формате YYYY-MM, сортируем по убыванию
+        let months = [...new Set(history.map(i => i.mk))];
+        months.sort((a,b) => b.localeCompare(a)); // благодаря ведущему нулю работает корректно
+        
+        // Если текущий месяц не выбран или отсутствует в списке, выбираем первый
+        if (!currentMonth || !months.includes(currentMonth)) {
+            currentMonth = months[0];
+        }
+        
+        // Заполняем select
+        const monthNames = ["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
+        monthSelect.innerHTML = months.map(m => {
+            const [y, mi] = m.split('-');
+            const idx = parseInt(mi,10)-1;
+            return `<option value="${m}" ${m === currentMonth ? 'selected' : ''}>${monthNames[idx]} ${y}</option>`;
+        }).join('');
+        
+        // Фильтруем записи
+        const filtered = history.filter(i => i.mk === currentMonth);
+        
+        let totalKm = 0;
+        let totalSavedClean = 0;   // сумма только отрицательных df (экономия)
+        let currentBalance = 0;     // алгебраическая сумма df и списаний
+        
+        listDiv.innerHTML = filtered.map(record => {
+            currentBalance += record.df;
+            if (!record.w && record.df < 0) totalSavedClean += Math.abs(record.df);
+            if (!record.w) totalKm += record.km;
+            
+            const commentHtml = (record.nt && record.nt.length) ? `<div class="h-comment">💬 ${escapeHtml(record.nt)}</div>` : '';
+            const editBtn = `<span class="btn-edit" onclick="editRecord(${record.id})">✏️</span>`;
+            const delBtn = `<span class="btn-delete" onclick="deleteRecord(${record.id})">🗑️</span>`;
+            const actionBtns = `<div>${editBtn} ${delBtn}</div>`;
+            
+            if (!record.w) {
+                let extraInfo = [];
+                if (record.mh > 0) extraInfo.push(`⏱️ Моточасы: ${record.mh}ч`);
+                if (record.lp > 0) extraInfo.push(`🚚 Кузов: ${record.lp} раз`);
+                const extraInfoHtml = extraInfo.length ? `<div class="h-sub-info">${extraInfo.join(' | ')}</div>` : '';
+                
+                return `<div class="h-item ${record.df > 0.05 ? 'pos' : 'neg'}">
+                    <div class="h-row"><span class="h-date">${record.dt}</span> ${actionBtns}</div>
+                    <div class="h-row"><span class="h-km">${record.km} км</span><span class="h-diff" style="color:${record.df > 0 ? 'var(--danger)' : 'var(--accent)'}">${record.df > 0 ? '+' : ''}${record.df.toFixed(1)} л</span></div>
+                    ${extraInfoHtml}
+                    <div class="h-compare-line"><span>Факт: ${record.act.toFixed(1)} л</span><span>Норма: ${record.exp.toFixed(1)} л</span></div>
+                    ${commentHtml}
+                </div>`;
+            } else {
+                return `<div class="h-item withd">
+                    <div class="h-row"><span class="h-date">${record.dt}</span> ${actionBtns}</div>
+                    <div class="h-row"><span class="h-km">🔻 Снятие экономии</span><span class="h-diff" style="color:#b8860b">-${record.df.toFixed(1)} л</span></div>
+                </div>`;
+            }
+        }).join('');
+        
+        // Статистика
+        summaryDiv.style.display = 'block';
+        summaryDiv.innerHTML = `
+            <div>📆 За месяц: <b>${totalKm} км</b></div>
+            <div>💚 Сэкономлено всего: <b style="color:var(--accent);">${totalSavedClean.toFixed(1)} л</b></div>
+            <div>⚖️ Остаток экономии: <b style="color:${currentBalance < -0.05 ? 'var(--accent)' : (currentBalance > 0.05 ? 'var(--danger)' : 'inherit')}">${currentBalance.toFixed(1)} л</b></div>
+            <div style="font-size:0.7rem; margin-top:4px;">* Отрицательный остаток = есть ещё экономия</div>
+        `;
+        
+        // Показываем кнопку списания только если есть отрицательный баланс (экономия > 0)
+        if (currentBalance < -0.05) {
+            withdrawBtn.style.display = 'block';
+        } else {
+            withdrawBtn.style.display = 'none';
+        }
+    }
+    
+    function changeMonth() {
+        currentMonth = document.getElementById('mf').value;
+        renderHistory();
+    }
+    
+    // --- Списание экономии ---
     function showWithdrawInput() {
         document.getElementById('btnWd').style.display = 'none';
         document.getElementById('wdInputArea').style.display = 'block';
         document.getElementById('wdVal').focus();
     }
-
+    
     function cancelWithdraw() {
         document.getElementById('wdInputArea').style.display = 'none';
-        const hist = JSON.parse(localStorage.getItem('fLog')) || [];
-        if(hist.length) document.getElementById('btnWd').style.display = 'block';
+        const history = JSON.parse(localStorage.getItem('fLog')) || [];
+        if (history.length) {
+            // перепроверим, нужно ли показывать кнопку
+            const filtered = history.filter(i => i.mk === currentMonth);
+            let bal = filtered.reduce((sum, rec) => sum + rec.df, 0);
+            if (bal < -0.05) document.getElementById('btnWd').style.display = 'block';
+            else document.getElementById('btnWd').style.display = 'none';
+        }
         document.getElementById('wdVal').value = '';
     }
-
+    
     function confirmWithdraw() {
-        let val = document.getElementById('wdVal').value;
-        if(!val || isNaN(val) || val <= 0) return alert('Введите корректное количество литров!');
-        
-        const d = new Date(), hist = JSON.parse(localStorage.getItem('fLog')) || [];
-        hist.unshift({
+        let val = parseFloat(document.getElementById('wdVal').value);
+        if (isNaN(val) || val <= 0) {
+            showToast('Введите корректное количество литров (больше 0)', true);
+            return;
+        }
+        const d = new Date();
+        const monthKey = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+        const history = JSON.parse(localStorage.getItem('fLog')) || [];
+        history.unshift({
             id: Date.now(),
-            mk: `${d.getFullYear()}-${d.getMonth()}`,
+            mk: monthKey,
             dt: d.toLocaleString('ru', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'}),
-            km: 0,
-            df: parseFloat(val), 
+            km: 0, mh: 0, lp: 0, act: 0, exp: 0,
+            df: val,
             w: true,
-            nt: '' // Для операций изъятия комментарий пустой
+            nt: ''
         });
-        localStorage.setItem('fLog', JSON.stringify(hist));
+        localStorage.setItem('fLog', JSON.stringify(history));
         cancelWithdraw();
-        render();
+        renderHistory();
+        showToast(`💰 Списано ${val.toFixed(1)} л экономии`);
     }
-
-    function reset() {
-        document.getElementById('fs').value = localStorage.getItem('lastEvening') || '';
-        ['fr','fe','dist','mh','lp','notes'].forEach(id => document.getElementById(id).value = '');
+    
+    // --- Настройки норм, темы, экспорт ---
+    function saveNorms() {
+        ['nd','nh','nl'].forEach(id => localStorage.setItem(id, document.getElementById(id).value));
         calc();
+        showToast('📐 Нормы расхода сохранены');
     }
-
-    function render() {
-        const hist = JSON.parse(localStorage.getItem('fLog')) || [], list = document.getElementById('hl'), f = document.getElementById('mf'), wdBtn = document.getElementById('btnWd');
-        if(!hist.length) { 
-            f.style.display='none'; wdBtn.style.display='none'; 
-            list.innerHTML = '<p style="text-align:center;padding:20px;color:gray">Нет сохраненных смен</p>'; return; 
+    
+    function toggleTheme() {
+        const html = document.documentElement;
+        if (html.getAttribute('data-theme') === 'dark') {
+            html.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+            document.getElementById('themeBtn').innerText = 'Режим: 🌙 Тёмный';
+        } else {
+            html.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            document.getElementById('themeBtn').innerText = 'Режим: ☀️ Светлый';
         }
-        
-        f.style.display='block'; 
-        if(document.getElementById('wdInputArea').style.display !== 'block') {
-            wdBtn.style.display='block';
+    }
+    
+    function exportData(format) {
+        const history = JSON.parse(localStorage.getItem('fLog')) || [];
+        if (!history.length) {
+            showToast('Нет данных для экспорта', true);
+            return;
         }
-
-        const months = [...new Set(hist.map(i => i.mk))].sort().reverse();
-        const names = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
-        f.innerHTML = months.map(m => {
-             const [y, mi] = m.split('-');
-             return `<option value="${m}">${names[mi]} ${y}</option>`;
-        }).join('');
-        
-        const filtered = hist.filter(i => i.mk === f.value);
-        let sK = 0, sD = 0;
-        list.innerHTML = filtered.map(i => {
-            sD += i.df;
-            
-            // Проверка наличия и форматирование компактного вывода комментария
-            const commentHtml = (i.nt && i.nt.length > 0) ? `<div class="h-comment">💬 ${i.nt}</div>` : '';
-
-            if(!i.w) {
-                sK += i.km;
-                return `<div class="h-item ${i.df > 0.05 ? 'pos' : 'neg'}">
-                    <div class="h-row"><span class="h-date">${i.dt}</span> <span style="font-size:0.7rem; color:red; cursor:pointer;" onclick="del(${i.id})">УДАЛИТЬ</span></div>
-                    <div class="h-row">
-                        <span class="h-km">${i.km} км</span>
-                        <span class="h-diff" style="color:${i.df > 0.05 ? 'var(--danger)' : 'var(--accent)'}">${i.df > 0 ? '+' : ''}${i.df.toFixed(1)} л</span>
-                    </div>
-                    ${commentHtml}
-                </div>`;
-            } else {
-                return `<div class="h-item withd">
-                    <div class="h-row"><span class="h-date">${i.dt}</span> <span style="font-size:0.7rem; color:red; cursor:pointer;" onclick="del(${i.id})">УДАЛИТЬ</span></div>
-                    <div class="h-row">
-                        <span class="h-km">🔻 Снятие экономии</span>
-                        <span class="h-diff" style="color:#b8860b">Изъято: ${i.df.toFixed(1)} л</span>
-                    </div>
-                </div>`;
+        let dataStr, filename;
+        if (format === 'json') {
+            dataStr = JSON.stringify(history, null, 2);
+            filename = 'fuel_log.json';
+        } else {
+            // CSV
+            const headers = ['id','date','monthKey','km','mh','lifts','actual','norm','diff','isWithdraw','comment'];
+            const rows = history.map(r => [
+                r.id, r.dt, r.mk, r.km, r.mh, r.lp, r.act, r.exp, r.df, r.w ? 'yes' : 'no', `"${(r.nt || '').replace(/"/g, '""')}"`
+            ]);
+            const csv = [headers, ...rows].map(row => row.join(',')).join('\n');
+            dataStr = csv;
+            filename = 'fuel_log.csv';
+        }
+        const blob = new Blob([dataStr], {type: 'text/plain'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(a.href);
+        showToast(`📁 Экспорт ${format.toUpperCase()} завершён`);
+    }
+    
+    function confirmClearAll() {
+        if (confirm('⚠️ ВНИМАНИЕ! Это удалит ВСЮ историю, нормы и настройки. Продолжить?')) {
+            if (confirm('Последний шанс. Точно удалить всё?')) {
+                localStorage.clear();
+                location.reload();
             }
-        }).join('');
-        
-        const sBox = document.getElementById('ms');
-        sBox.style.display = 'block';
-        sBox.innerHTML = `За месяц: <b>${sK} км</b> | Итог: <b style="color:${sD > 0.05 ? 'red':'green'}">${sD.toFixed(1)} л</b>`;
+        }
     }
-
-    function del(id) { if(confirm('Удалить эту запись?')) {
-        let h = JSON.parse(localStorage.getItem('fLog'));
-        localStorage.setItem('fLog', JSON.stringify(h.filter(i => i.id !== id)));
-        render();
-    }}
-
-    function clearAll() { if(confirm('Это полностью сотрет историю. Вы уверены?')) { localStorage.clear(); location.reload(); } }
+    
+    // --- Навигация ---
+    function go(id, btn) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        btn.classList.add('active');
+        if (id === 'history') {
+            cancelWithdraw();
+            renderHistory();
+        }
+        if (id === 'shift') {
+            calc();
+        }
+    }
+    
+    // --- Загрузка начальных данных ---
+    window.onload = () => {
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.getElementById('themeBtn').innerText = 'Режим: ☀️ Светлый';
+        }
+        ['nd','nh','nl'].forEach(id => {
+            if (localStorage.getItem(id)) document.getElementById(id).value = localStorage.getItem(id);
+        });
+        const lastEvening = localStorage.getItem('lastEvening');
+        if (lastEvening) document.getElementById('fs').value = lastEvening;
+        calc();
+        // установим текущий месяц для истории (необязательно)
+        const hist = JSON.parse(localStorage.getItem('fLog')) || [];
+        if (hist.length) {
+            const months = [...new Set(hist.map(i => i.mk))];
+            months.sort((a,b)=>b.localeCompare(a));
+            if (months.length) currentMonth = months[0];
+        }
+        renderHistory();
+    };
+    
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
+    // Делаем функции глобальными для вызова из onclick
+    window.saveShift = saveShift;
+    window.resetForm = resetForm;
+    window.calc = calc;
+    window.go = go;
+    window.saveNorms = saveNorms;
+    window.toggleTheme = toggleTheme;
+    window.confirmClearAll = confirmClearAll;
+    window.editRecord = editRecord;
+    window.deleteRecord = deleteRecord;
+    window.cancelEdit = cancelEdit;
+    window.changeMonth = changeMonth;
+    window.showWithdrawInput = showWithdrawInput;
+    window.cancelWithdraw = cancelWithdraw;
+    window.confirmWithdraw = confirmWithdraw;
+    window.exportData = exportData;
 </script>
 </body>
 </html>
